@@ -1,5 +1,8 @@
 <?php
 
+use App\Mail\WelcomeToLaracast;
+use Illuminate\Support\Facades\Mail;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,4 +20,10 @@ Route::get('/', function () {
 
 Route::get('users', function() {
     return view('users', ['users'=>App\User::paginate(4)]);
+});
+
+Route::get('send', function() {
+    $email = new WelcomeToLaracast(App\User::find(10));
+    Mail::to('sbjsw@qq.com')->send($email);
+    echo 'done';
 });
