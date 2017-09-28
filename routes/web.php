@@ -35,3 +35,12 @@ Route::get('fools', function() {
     
     return view('fools', compact('fools'));
 });
+
+
+Route::get('favorite', function() {
+    $user = App\User::first();
+    $post = App\Post::first();
+    $user->favorites()->attach($post); // 加入收藏
+    $user->favorites()->deattach($post); // 移除收藏
+    $user->favorites()->toggle($post); // toggle收藏
+});
