@@ -27,3 +27,11 @@ Route::get('send', function() {
     Mail::to('sbjsw@qq.com')->send($email);
     echo 'done';
 });
+
+Route::get('fools', function() {
+    $fools = collect(['taylor', 'matth', 'jeffery'])->map(function ($name) {
+        return new App\User(['name'=>$name]);
+    });
+    
+    return view('fools', compact('fools'));
+});
