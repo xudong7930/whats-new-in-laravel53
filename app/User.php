@@ -32,4 +32,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Post::class, 'favorites');
     }
+
+    public function routeNotificationForSlack()
+    {
+        return 'https://hooks.slack.com/services/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'; 
+    }
 }

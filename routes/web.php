@@ -1,6 +1,9 @@
 <?php
 
 use App\Mail\WelcomeToLaracast;
+use App\Notifications\LessonPublished;
+use App\Notifications\PaymentReceived;
+use App\Notifications\SubscriptionCanceled;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -13,6 +16,8 @@ use Illuminate\Support\Facades\Mail;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,4 +48,46 @@ Route::get('favorite', function() {
     $user->favorites()->attach($post); // 加入收藏
     $user->favorites()->deattach($post); // 移除收藏
     $user->favorites()->toggle($post); // toggle收藏
+});
+
+
+Route::get('lesson', function() {
+    $user = App\User::first();
+    $lesson = App\Lesson::first();
+    $user->notify(new LessonPublished($lesson));
+    dump('done');
+});
+
+Route::get('cancel', function() {
+    Auth::loginUsingId(1);
+    Auth::user()->notify(new SubscriptionCanceled);
+    dump('done');
+});
+
+Route::get('notification', function() {
+    Auth::loginUsingId(1);
+    // return Auth::user()->notifications;
+    // return Auth::user()->unreadNotifications;
+    // return App\Notification::all();
+    
+    // $notify = Auth::user()->unreadNotifications;
+    // foreach ($notify as $item) {
+    //     dump($item->data); // 返回 toDatabase方法里面的东西
+    //     //  $item->markAsRead();
+    // }
+
+    return view('notifications');
+});
+
+Route::delete('notification/{user}/read', function(App\User $user) {
+    $user->notifications->map(function($n) {
+        $n->markAsRead();
+    });
+    return back();
+});
+
+Route::get('slack', function() {
+    $user = App\User::first();
+    $user->notify(new PaymentReceived);
+    dump('slack message send done');
 });
