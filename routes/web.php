@@ -4,6 +4,7 @@ use App\Mail\WelcomeToLaracast;
 use App\Notifications\LessonPublished;
 use App\Notifications\PaymentReceived;
 use App\Notifications\SubscriptionCanceled;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -90,4 +91,26 @@ Route::get('slack', function() {
     $user = App\User::first();
     $user->notify(new PaymentReceived);
     dump('slack message send done');
+});
+
+
+// simple file upload
+Route::get('avatar', function() {
+    return view('avatar');
+});
+
+Route::post('avatar', function(Request $request) {
+    // request()->file('avatar')->store('avatars');
+    // $request->file('avatar')->store('avatars'); // save to storage/app/
+
+    $file = $request->file('avatar');
+    $ext = $file->extension();
+    $user = App\User::first();
+    $file->storeAs('public/avatars/'.$user->id, 'avatar.png');
+
+    // blade template show image2
+    // run: php artisan storage:link
+    // <img src="{{ asset('storage/avatars/1/avatar.png') }}">
+
+    return back();
 });
