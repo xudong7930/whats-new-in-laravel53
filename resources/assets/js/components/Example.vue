@@ -18,6 +18,12 @@
     export default {
         mounted() {
             console.log('Component mounted.')
+        },
+        created () {
+            this.$http.get('http://localhost:8000/api/user')
+                .then( (response) => {
+                    console.dir(response);
+                });
         }
     }
 </script>

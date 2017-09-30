@@ -114,3 +114,33 @@ Route::post('avatar', function(Request $request) {
 
     return back();
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+
+
+// laravel passport
+Route::get('consumer', function() {
+    $query = http_build_query([
+        'client_id' => 4,
+        'redirect_uri' => 'http://localhost:8000/consumer/callback',
+        'response_type' => 'code',
+        'scope' => ''
+    ]);
+
+    return redirect('http://localhost:8000/oauth/authorize?'.$query);
+});
+
+Route::get('consumer/callback', function(Request $request) {
+    $authData = collect([
+        'grant_type' => 'authorization_code',
+        'client_id' => '4',
+        'client_secret' => '9kLdMRRxg4ALEAaLnwcDDhwgcrTJlXAGLpFQekEM',
+        'redirect_uri' => 'http://localhost:8000/consumer/callback',
+        'code' => $request->code
+    ]);
+
+    return view('callback', compact('authData'));
+});
+
