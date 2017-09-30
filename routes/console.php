@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 
+
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -13,6 +14,30 @@ use Illuminate\Foundation\Inspiring;
 |
 */
 
+// try in terminal: php artisan inspire
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+
+Artisan::command('generate:model {name}', function () {
+    $model = $this->argument('name');
+    $phpClass = <<<EOF
+<?php
+
+namespace App;
+
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+
+class {$model} extends Model
+{
+
+}
+
+EOF;
+    File::put('app/'.$model.'.php', $phpClass);
+    $this->info('All done!');
+
+    // exec('touch app/' . $this->argument('name') . ".php");
+})->describe('Generate a special command');
