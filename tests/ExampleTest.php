@@ -16,4 +16,11 @@ class ExampleTest extends TestCase
         $this->visit('/')
              ->see('Laravel');
     }
+
+    public function testUserRegisterEventFired()
+    {
+        Event::fake();
+        $this->visist('/newuser');
+        Event::assertEventFired(new SomeEvent);
+    }
 }
