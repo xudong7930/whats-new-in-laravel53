@@ -12,6 +12,16 @@
             <li class="{{ $loop->first ? 'first' : '' }}">{{ $fool->name }}</li>
             @endif
         @endforeach
+        <form method="POST" action="">
+            {{ csrf_field() }}
+            {{ method_feild('POST') }}
+            <div class="form-group">
+                 <label for="one" class="control-label">One:</label>
+                 <input type="text" id="one" name="onename" class="form-control" value="{{ old('onename') }}" />
+             </div> 
+            <button class="btn btn-primary">ok</button>
+        </form>
+
     </div>
 </body>
 </html>

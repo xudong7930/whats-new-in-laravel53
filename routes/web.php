@@ -144,3 +144,7 @@ Route::get('consumer/callback', function(Request $request) {
     return view('callback', compact('authData'));
 });
 
+
+// fluent validation rules
+Route::get('account/setting', 'AccountController@edit')->name('accountedit');
+Route::patch('account/setting', 'AccountController@store')->name('accountstore');
